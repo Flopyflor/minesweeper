@@ -29,7 +29,7 @@ public class Mines extends Application {
     private static Scene scene;
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws IOException {        
         scene = new Scene(loadFXML("primary"), 640, 480);
         stage.setTitle("Mi app de prueba");
         stage.setScene(scene);
@@ -49,7 +49,7 @@ public class Mines extends Application {
         launch();
     }
 
-    public static void play() {
+    public static void playCLI() {
         
         try (Scanner sc = new Scanner(System.in)) {
             

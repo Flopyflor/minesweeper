@@ -59,14 +59,7 @@ public class View {
     public void display_full_board() {
         for (int y = 0; y < this.matrix.get_length(); y++) {
             for (int x = 0; x < this.matrix.get_length(); x++){
-                if (this.matrix.is_flagged(x, y) && this.matrix.is_bomb(x, y)) {
-                    System.out.print(this.FLAG);
-                } else if (this.matrix.is_bomb(x, y)) {
-                    System.out.print(this.BOMB);
-                } else {
-                    System.out.print(this.matrix.get_cell(x, y));
-                }
-
+                System.out.print(this.get_cell(x, y));
                 System.out.print(" ");
             }
             System.out.println("");
@@ -113,6 +106,16 @@ public class View {
     public void complete_cell(int x, int y) {
         if (this.matrix.is_visible(x, y) && this.matrix.get_cell(x, y) == this.matrix.get_surrounding_flags(x, y)) {
             this.reveal_surrounding(x, y);
+        }
+    }
+    
+    public String get_cell(int x, int y){
+        if (this.matrix.is_flagged(x, y) && this.matrix.is_bomb(x, y)) {
+            return this.FLAG;
+        } else if (this.matrix.is_bomb(x, y)) {
+           return this.BOMB;
+        } else {
+            return Integer.toString(this.matrix.get_cell(x, y));
         }
     }
 
