@@ -64,7 +64,8 @@ public class Matrix {
         }
     }
     
-    private int get_number_in(int pos_x, int pos_y){
+    private int calculate_number_in(int pos_x, int pos_y){
+        //calculates the number of surrounding bombs
         if (this.is_bomb(pos_x, pos_y)) {
             return Reference.BOMB;
         }
@@ -131,7 +132,7 @@ public class Matrix {
     private void fill_matrix() {
         for (int x = 0; x < this.length; x++) {
             for (int y = 0; y < this.length; y++) {
-                this.matrix[y][x] = this.get_number_in(x, y) + Reference.HIDDEN;
+                this.matrix[y][x] = this.calculate_number_in(x, y) + Reference.HIDDEN;
             }
         }
     }
@@ -168,5 +169,9 @@ public class Matrix {
             }
         }
         return true;
+    }
+    
+    public boolean is_within_bounds(int x, int y) {
+        return 0 <= x && x < this.length && 0 <= y && y < this.length;
     }
 }

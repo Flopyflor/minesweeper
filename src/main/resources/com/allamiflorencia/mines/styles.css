@@ -1,0 +1,39 @@
+.cell {
+    -fx-border-style: solid;
+    -fx-border-color: black;
+}
+
+.revealed {
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-font-weight: bold;
+    -fx-width: 100%;
+}
+.number0 {
+    -fx-text-fill:transparent;
+}
+
+.number1 {
+    -fx-text-fill: blue;
+}
+.number2 {
+    -fx-text-fill: green;
+}
+.number3 {
+    -fx-text-fill: red;
+}
+.number4 {
+    -fx-text-fill: darkblue;
+}
+.number5 {
+    -fx-text-fill: maroon;
+}
+.number6 {
+    -fx-text-fill: lightgreen;
+}
+.number7 {
+    -fx-text-fill: hotpink;
+}
+.number8 {
+    -fx-text-fill: yellow;
+}

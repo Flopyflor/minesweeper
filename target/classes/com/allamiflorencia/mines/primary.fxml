@@ -12,7 +12,7 @@
        
        <Button text="Start" onAction="#setUpGrid" fx:id="startBtn" />
        
-       <GridPane alignment="CENTER" vgap="10" hgap="10" fx:id="mainGrid">
+       <GridPane alignment="CENTER" fx:id="mainGrid" >
        </GridPane>
    </children>
     

@@ -2,3 +2,4 @@ com\allamiflorencia\mines\Matrix\Matrix.class
 com\allamiflorencia\mines\Mines.class
 com\allamiflorencia\mines\Matrix\Reference.class
 com\allamiflorencia\mines\View\View.class
+com\allamiflorencia\mines\Controller\PrimaryController.class
