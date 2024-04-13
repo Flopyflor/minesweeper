@@ -20,7 +20,7 @@ public class View {
     }
 
     public void check_progress() {
-        if (this.matrix.no_hidden_cells()) {
+        if (this.matrix.finished()) {
             System.out.println("Ganaste");
             display_full_board();
             this.playing = false;

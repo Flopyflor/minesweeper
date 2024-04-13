@@ -162,10 +162,12 @@ public class Matrix {
         }
     }
 
-    public boolean no_hidden_cells() {
+    public boolean finished() {
         for (int i = 0; i < this.length; i++) {
             for (int j = 0; j < this.length; j++) {
-                if (this.is_hidden(i, j)) {return false;}
+                if (this.is_hidden(i, j) && !this.is_bomb(i, j)) {
+                    return false;
+                }
             }
         }
         return true;

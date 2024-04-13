@@ -29,7 +29,7 @@ public class Mines extends Application {
     public void start(Stage stage) throws IOException {        
         scene = new Scene(loadFXML("primary"), 640, 480);
         scene.getStylesheets().add(Mines.class.getResource("styles.css").toExternalForm());
-        stage.setTitle("Mi app de prueba");
+        stage.setTitle("Buscaminas");
         stage.setScene(scene);
         stage.show();
     }

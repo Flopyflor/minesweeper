@@ -10,7 +10,7 @@
    <children>
        <Label text="Buscaminas" />
        
-       <Button text="Start" onAction="#setUpGrid" fx:id="startBtn" />
+       <Button text="Start" onAction="#clickStartGame" fx:id="startBtn" />
        
        <GridPane alignment="CENTER" fx:id="mainGrid" >
        </GridPane>
