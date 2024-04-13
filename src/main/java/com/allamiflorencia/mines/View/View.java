@@ -2,6 +2,7 @@ package com.allamiflorencia.mines.View;
 
 import com.allamiflorencia.mines.Matrix.Matrix;
 
+//This is a CLI View. Not used in GUI version
 public class View {
     private String FLAG = "%";
     private String EMPTY = "-";

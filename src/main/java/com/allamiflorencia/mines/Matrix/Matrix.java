@@ -54,6 +54,7 @@ public class Matrix {
         return matrix;
     }
     
+    //debugging func
     public void print_matrix() {
         for (int i = 0; i < this.length; i++){
             for (int j = 0; j < this.length; j++){
@@ -163,6 +164,7 @@ public class Matrix {
     }
 
     public boolean finished() {
+        //return true if you won the game
         for (int i = 0; i < this.length; i++) {
             for (int j = 0; j < this.length; j++) {
                 if (this.is_hidden(i, j) && !this.is_bomb(i, j)) {
