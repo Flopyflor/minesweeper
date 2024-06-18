@@ -10,19 +10,29 @@ import java.io.FileNotFoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /**
  *
@@ -30,6 +40,7 @@ import javafx.scene.shape.Rectangle;
  */
 public class PrimaryController {
     @FXML GridPane mainGrid;
+    @FXML Label remainingBombs;
     
     private final double size = 20;
     private final Color RED = Color.RED;
@@ -63,9 +74,13 @@ public class PrimaryController {
         }
     }
     
+    protected void update_remaining_bombs(){
+        this.remainingBombs.setText("Remaining Bombs: "+(this.matrix.get_bombs()-this.matrix.get_flag_count()));
+    }
     
 
-    protected void start_game(){
+    protected void start_game(){        
+        //grid setup
         this.mainGrid.setOnMouseClicked(null);
         
         this.set_playing(true);
@@ -97,6 +112,7 @@ public class PrimaryController {
                 cell.setOnMouseClicked((MouseEvent e) -> {
                     if(e.getButton() == MouseButton.PRIMARY && this.is_playing()){
                         this.reveal_cell(column, row);
+                        this.check_win();
                         
                     } else if (e.getButton() == MouseButton.SECONDARY && this.is_playing()) {
                         this.toggle_flag(column, row);
@@ -108,11 +124,127 @@ public class PrimaryController {
                 mainGrid.add(cell, column, row);
             }
         }
+        
+        //bomb count
+        this.update_remaining_bombs();
     }
     
     @FXML
     protected void clickStartGame(ActionEvent event) {
         this.start_game();
+    }
+    
+    @FXML
+    protected void clickDifficulty(ActionEvent event){
+        difficultyMenu();
+    }
+    
+    /*  SOME ALTERNATIVE DIFFICULTY MENUES I EXPERIMENTED WITH.
+        I DIDN'T LIKE THEM BUT, WHY THROW SEMI-USABLE STUFF?
+    
+    // can see the stuff. no bg (could be fixed?) no close button, dependant on
+    // owner window. closes with esc. not modal
+    public static void PopupControlExperiment(ActionEvent event){
+        PopupControl menu = new PopupControl();
+        
+        VBox comp = new VBox();
+        TextField nameField = new TextField("Name");
+        TextField phoneNumber = new TextField("Phone Number");
+        comp.getChildren().add(nameField);
+        comp.getChildren().add(phoneNumber);
+        
+        menu.getScene().setRoot(comp);
+        menu.show(((Button)event.getSource()).getScene().getWindow());
+    }
+    
+    //blue option bg. dependant. not modal. hides when out of focus. 
+    public static void ContextMenuExperiment(ActionEvent event){
+        ContextMenu menu = new ContextMenu();
+        menu.getItems().add(new MenuItem("hi"));
+        menu.getItems().add(new MenuItem("hello"));
+        
+        VBox comp = new VBox();
+        TextField nameField = new TextField("Name");
+        TextField phoneNumber = new TextField("Phone Number");
+        comp.getChildren().add(nameField);
+        comp.getChildren().add(phoneNumber);
+        
+        menu.getItems().add(new CustomMenuItem(comp));
+        menu.show(((Button)event.getSource()).getScene().getWindow());
+    }
+    
+    //dependant, not modal, no bg, closes with esc
+    public static void PopupExperiment(ActionEvent event){
+        Popup menu = new Popup();
+        menu.getContent().add(new Pane());
+        ((Pane) menu.getContent().get(0)).getChildren().add(new TextField("Size"));
+        menu.getContent().add(new TextField("Mines"));
+        menu.show(((Button)event.getSource()).getScene().getWindow());
+    }
+    */
+    
+    public void difficultyMenu(){
+        Stage newStage = new Stage(); //stage     
+        VBox container = new VBox();
+        container.setPadding(new Insets(20, 0, 10, 10));
+        
+        //grid
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(10);
+        grid.setVgap(20);
+        
+        //creating inputs
+        //size
+        Label sizeLabel = new Label("Size:");
+        TextField sizeInput = new TextField("10");
+        grid.add(sizeLabel, 0, 0);
+        grid.add(sizeInput, 1, 0);
+        
+        //bombs
+        Label bombsLabel = new Label("Bombs:");
+        TextField bombsInput = new TextField("10");
+        grid.add(bombsLabel, 0, 1);
+        grid.add(bombsInput, 1, 1);
+        
+        container.getChildren().add(grid);
+        
+        //adding controller
+        final EventHandler<KeyEvent> controller = (final KeyEvent e) -> {
+            //problematic key and its ascii: esc 27 backspace 8 enter 13
+            int ascii = ( int)e.getCharacter().charAt(0);
+            
+            if((!(ascii == 27 || ascii == 8 || ascii == 13) && !e.getCharacter().matches("\\d"))
+                    || ((TextField) e.getTarget()).getCharacters().length() > 3){
+                ((TextField) e.getTarget()).deletePreviousChar();
+            }
+        };
+        
+        sizeInput.setOnKeyTyped(controller);
+        bombsInput.setOnKeyTyped(controller);
+        
+        //add button
+        Button btn = new Button("Set");
+        btn.setOnMouseClicked((MouseEvent e)->{
+            int newSize = Integer.parseInt(sizeInput.getCharacters().toString());
+            int newBombs = Integer.parseInt(bombsInput.getCharacters().toString());
+            
+            this.CONFIG_length = Math.min(Math.max(3,newSize), 30);
+            this.CONFIG_bombs = Math.min(Math.max(1, newBombs), this.CONFIG_length * this.CONFIG_length -1);
+            
+            this.start_game();
+            newStage.close();
+        });
+        
+        container.getChildren().add(btn);
+        container.setAlignment(Pos.CENTER);
+        container.setSpacing(30);
+        
+        //setting the container in the scene in the stage
+        newStage.initModality(Modality.APPLICATION_MODAL);
+        Scene stageScene = new Scene(container, 300, 200);
+        newStage.setScene(stageScene);
+        newStage.show();
     }
 
     public boolean is_playing(){
@@ -142,7 +274,7 @@ public class PrimaryController {
     }
 
     public void check_win() {
-        if (this.matrix.finished()) {
+        if (this.matrix.finished() && this.is_playing()) {
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Ganaste");
             alert.setHeaderText("Ganaste! :)");
@@ -233,9 +365,6 @@ public class PrimaryController {
             if (this.matrix.is_visible_empty(x, y)) {
                 this.reveal_surrounding(x, y);
             }
-
-            //if I really revealed a cell, could I have won...?
-            this.check_win();
         }
         
     }
@@ -276,5 +405,6 @@ public class PrimaryController {
                         .add(new Rectangle(size, size, RED));
             }
         }
+        this.update_remaining_bombs();
     }
 }

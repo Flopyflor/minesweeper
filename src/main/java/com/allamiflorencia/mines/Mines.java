@@ -26,12 +26,13 @@ public class Mines extends Application {
     private static Scene scene;
 
     @Override
-    public void start(Stage stage) throws IOException {        
+    public void start(Stage stage) throws IOException {              
         scene = new Scene(loadFXML("primary"), 640, 480);
         scene.getStylesheets().add(Mines.class.getResource("styles.css").toExternalForm());
         stage.setTitle("Buscaminas");
         stage.setScene(scene);
         stage.show();
+        
     }
 
     public static void setRoot(String fxml) throws IOException {
@@ -48,6 +49,7 @@ public class Mines extends Application {
     }
 
     public static void playCLI() {
+        //deprecated
         
         try (Scanner sc = new Scanner(System.in)) {
             

@@ -18,6 +18,7 @@ public class Matrix {
     private int[][] matrix;
     private int bombs;
     private int length;
+    private int flag_count;
     
     public int get_bombs() {
         return this.bombs;
@@ -27,10 +28,6 @@ public class Matrix {
         return this.length;
     }
     
-    public int[][] get_matrix() {
-        return matrix;
-    }
-
     public int get_cell(int x, int y) {
         return this.matrix[y][x];
     }
@@ -141,6 +138,7 @@ public class Matrix {
     public void prepare_for_play(int length, int bombs) {
         this.bombs = bombs;
         this.length = length;
+        this.flag_count = 0;
         this.put_bombs();
         this.fill_matrix();
     }
@@ -154,12 +152,14 @@ public class Matrix {
     public void flag_cell(int x, int y) {
         if (this.is_hidden(x, y)) {
             this.matrix[y][x] += Reference.FLAGGED - Reference.HIDDEN;
+            this.flag_count += 1;
         }
     }
 
     public void unflag_cell(int x, int y) {
         if (this.is_flagged(x, y)) {
             this.matrix[y][x] += Reference.HIDDEN - Reference.FLAGGED;
+            this.flag_count -= 1;
         }
     }
 
@@ -173,6 +173,10 @@ public class Matrix {
             }
         }
         return true;
+    }
+    
+    public int get_flag_count(){
+        return this.flag_count;
     }
     
     public boolean is_within_bounds(int x, int y) {
