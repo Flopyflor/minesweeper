@@ -295,9 +295,25 @@ public class PrimaryController {
         this.await_new_game();
     }
     
-    //TODO
     public void display_full_board() {
         //hacer que todos los botones muestren sus valores
+        for (int x = 0; x < this.CONFIG_length; x++){
+            for (int y = 0; y < this.CONFIG_length; y++){
+                if (this.matrix.is_undiscovered_bomb(x, y)){
+                    if (this.bomb_image != null) {
+                        ImageView cell = new ImageView(this.bomb_image);
+                        ((StackPane) this.mainGrid.getChildren().get(this.matrix.get_length()*x+y)).getChildren().clear();
+                        ((StackPane) this.mainGrid.getChildren().get(this.matrix.get_length()*x+y)).getChildren().add(new Rectangle(size, size, EMPTY));
+                        ((StackPane) this.mainGrid.getChildren().get(this.matrix.get_length()*x+y)).getChildren().add(cell);
+                    } else {
+                        Rectangle cell = new Rectangle(size/2, size/2, RED);
+                        ((StackPane) this.mainGrid.getChildren().get(this.matrix.get_length()*x+y)).getChildren().clear();
+                        ((StackPane) this.mainGrid.getChildren().get(this.matrix.get_length()*x+y)).getChildren().add(new Rectangle(size, size, EMPTY));
+                        ((StackPane) this.mainGrid.getChildren().get(this.matrix.get_length()*x+y)).getChildren().add(cell);
+                    }
+                }
+            }
+        }
     }
 
     public void reveal_cell(int x, int y) {

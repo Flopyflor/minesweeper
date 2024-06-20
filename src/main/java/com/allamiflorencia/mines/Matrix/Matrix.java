@@ -100,6 +100,10 @@ public class Matrix {
         return count;
     }
     
+    public boolean is_undiscovered_bomb(int pos_x, int pos_y){
+        return this.matrix[pos_y][pos_x] == Reference.BOMB + Reference.HIDDEN;
+    }
+    
     public boolean is_bomb(int pos_x, int pos_y) {
         return this.matrix[pos_y][pos_x] == Reference.BOMB || 
                this.matrix[pos_y][pos_x] == Reference.BOMB + Reference.HIDDEN ||
