@@ -52,9 +52,12 @@ public class PrimaryController {
     private Image bomb_image;
     private Image flag_image;
         
-    //these should come from config. obviously. TODO
     private int CONFIG_length = 10;
     private int CONFIG_bombs = 10;
+    private int MAX_length = 30;
+    private int MIN_length = 3;
+    private int MIN_bombs = 1;
+    
 
     public PrimaryController() {
         try {
@@ -197,31 +200,61 @@ public class PrimaryController {
         //creating inputs
         //size
         Label sizeLabel = new Label("Size:");
-        TextField sizeInput = new TextField("10");
+        TextField sizeInput = new TextField(Integer.toString(CONFIG_length));
         grid.add(sizeLabel, 0, 0);
         grid.add(sizeInput, 1, 0);
         
         //bombs
         Label bombsLabel = new Label("Bombs:");
-        TextField bombsInput = new TextField("10");
+        TextField bombsInput = new TextField(Integer.toString(CONFIG_bombs));
         grid.add(bombsLabel, 0, 1);
         grid.add(bombsInput, 1, 1);
         
         container.getChildren().add(grid);
         
-        //adding controller
-        final EventHandler<KeyEvent> controller = (final KeyEvent e) -> {
+        //adding length control
+        sizeInput.setOnKeyTyped((KeyEvent e) -> {
             //problematic key and its ascii: esc 27 backspace 8 enter 13
             int ascii = ( int)e.getCharacter().charAt(0);
             
+            //only write numbers
+            if((!(ascii == 27 || ascii == 8 || ascii == 13) && !e.getCharacter().matches("\\d"))
+                    || ((TextField) e.getTarget()).getCharacters().length() > 2){
+                ((TextField) e.getTarget()).deletePreviousChar();
+            }
+            
+            //correct to limits
+            if (e.getCharacter().matches("\\d")){
+                if(Integer.parseInt(((TextField) e.getTarget()).getCharacters().toString()) > MAX_length){
+                    ((TextField) e.getTarget()).setText(Integer.toString(MAX_length));
+                } else if (Integer.parseInt(((TextField) e.getTarget()).getCharacters().toString()) < MIN_length){
+                    ((TextField) e.getTarget()).setText(Integer.toString(MIN_length));
+                }
+            }
+        });
+        
+        //bomb control
+        bombsInput.setOnKeyTyped((KeyEvent e) -> {
+            //problematic key and its ascii: esc 27 backspace 8 enter 13
+            int ascii = ( int)e.getCharacter().charAt(0);
+            
+            //only write numbers
             if((!(ascii == 27 || ascii == 8 || ascii == 13) && !e.getCharacter().matches("\\d"))
                     || ((TextField) e.getTarget()).getCharacters().length() > 3){
                 ((TextField) e.getTarget()).deletePreviousChar();
             }
-        };
-        
-        sizeInput.setOnKeyTyped(controller);
-        bombsInput.setOnKeyTyped(controller);
+            
+            //correct to limits
+            if (e.getCharacter().matches("\\d")){
+                int max_bombs = Integer.parseInt(sizeInput.getCharacters().toString()) 
+                        * Integer.parseInt(sizeInput.getCharacters().toString()) - 1;
+                if(Integer.parseInt(((TextField) e.getTarget()).getCharacters().toString()) > max_bombs){
+                    ((TextField) e.getTarget()).setText(Integer.toString(max_bombs));
+                } else if (Integer.parseInt(((TextField) e.getTarget()).getCharacters().toString()) < MIN_bombs){
+                    ((TextField) e.getTarget()).setText(Integer.toString(MIN_bombs));
+                }
+            }
+        });
         
         //add button
         Button btn = new Button("Set");
@@ -229,8 +262,8 @@ public class PrimaryController {
             int newSize = Integer.parseInt(sizeInput.getCharacters().toString());
             int newBombs = Integer.parseInt(bombsInput.getCharacters().toString());
             
-            this.CONFIG_length = Math.min(Math.max(3,newSize), 30);
-            this.CONFIG_bombs = Math.min(Math.max(1, newBombs), this.CONFIG_length * this.CONFIG_length -1);
+            this.CONFIG_length = Math.min(Math.max(MIN_length,newSize), MAX_length);
+            this.CONFIG_bombs = Math.min(Math.max(MIN_bombs, newBombs), this.CONFIG_length * this.CONFIG_length -1);
             
             this.start_game();
             newStage.close();
