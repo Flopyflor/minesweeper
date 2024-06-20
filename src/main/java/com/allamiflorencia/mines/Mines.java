@@ -4,13 +4,19 @@
  */
 
 package com.allamiflorencia.mines;
+import com.allamiflorencia.mines.Controller.PrimaryController;
 import com.allamiflorencia.mines.View.View;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -31,6 +37,14 @@ public class Mines extends Application {
         scene.getStylesheets().add(Mines.class.getResource("styles.css").toExternalForm());
         stage.setTitle("Buscaminas");
         stage.setScene(scene);
+        
+        try {
+            FileInputStream icon_stream = new FileInputStream(".\\images\\icon.png");
+            stage.getIcons().add(new Image(icon_stream));
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(PrimaryController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         stage.show();
         
     }
