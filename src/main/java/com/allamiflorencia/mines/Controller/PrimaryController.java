@@ -5,6 +5,7 @@
 package com.allamiflorencia.mines.Controller;
 
 import com.allamiflorencia.mines.Matrix.Matrix;
+import com.allamiflorencia.mines.Mines;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.logging.Level;
@@ -29,6 +30,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.MediaException;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
@@ -58,6 +61,8 @@ public class PrimaryController {
     private int MIN_length = 3;
     private int MIN_bombs = 1;
     
+    private AudioClip winSound;
+    
 
     public PrimaryController() {
         try {
@@ -73,6 +78,13 @@ public class PrimaryController {
             this.flag_image = new Image(flag_stream, size, size, false, true);
             
         } catch (FileNotFoundException ex) {
+            Logger.getLogger(PrimaryController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try {
+            winSound = new AudioClip(Mines.class.getResource("audio/yay.mp3").toExternalForm());
+            
+        } catch (IllegalArgumentException | MediaException ex) {
             Logger.getLogger(PrimaryController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -311,6 +323,7 @@ public class PrimaryController {
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Ganaste");
             alert.setHeaderText("Ganaste! :)");
+            winSound.play();
             alert.showAndWait()
                .filter(response -> response == ButtonType.OK);
             this.display_full_board();
