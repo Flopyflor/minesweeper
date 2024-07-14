@@ -62,6 +62,7 @@ public class PrimaryController {
     private int MIN_bombs = 1;
     
     private AudioClip winSound;
+    private AudioClip lostSound;
     
 
     public PrimaryController() {
@@ -83,6 +84,7 @@ public class PrimaryController {
         
         try {
             winSound = new AudioClip(Mines.class.getResource("audio/yay.mp3").toExternalForm());
+            lostSound = new AudioClip(Mines.class.getResource("audio/explosion.mp3").toExternalForm());
             
         } catch (IllegalArgumentException | MediaException ex) {
             Logger.getLogger(PrimaryController.class.getName()).log(Level.SEVERE, null, ex);
@@ -335,6 +337,7 @@ public class PrimaryController {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Perdiste");
         alert.setHeaderText("Perdiste :(");
+        lostSound.play();
         alert.showAndWait()
             .filter(response -> response == ButtonType.OK);
         this.display_full_board();
