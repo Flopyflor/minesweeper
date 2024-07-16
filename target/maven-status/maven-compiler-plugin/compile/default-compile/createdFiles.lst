@@ -4,3 +4,4 @@ com\allamiflorencia\mines\Matrix\Reference.class
 com\allamiflorencia\mines\View\View.class
 com\allamiflorencia\mines\Controller\PrimaryController.class
 module-info.class
+com\allamiflorencia\mines\Main.class
