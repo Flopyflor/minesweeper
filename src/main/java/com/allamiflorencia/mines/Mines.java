@@ -6,8 +6,6 @@
 package com.allamiflorencia.mines;
 import com.allamiflorencia.mines.Controller.PrimaryController;
 import com.allamiflorencia.mines.View.View;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -23,9 +21,6 @@ import javafx.stage.Stage;
  *
  * @author flopy
  * 
- * cosas que faltan:
- * - mejores estructuras?
- * - gui, obv
  */
 public class Mines extends Application {
     
@@ -39,10 +34,9 @@ public class Mines extends Application {
         stage.setScene(scene);
         
         try {
-            FileInputStream icon_stream = new FileInputStream(".\\images\\icon.png");
-            stage.getIcons().add(new Image(icon_stream));
+            stage.getIcons().add(new Image(Mines.class.getResource("images/icon.png").toExternalForm()));
             
-        } catch (FileNotFoundException ex) {
+        } catch (IllegalArgumentException ex) {
             Logger.getLogger(PrimaryController.class.getName()).log(Level.SEVERE, null, ex);
         }
         stage.show();

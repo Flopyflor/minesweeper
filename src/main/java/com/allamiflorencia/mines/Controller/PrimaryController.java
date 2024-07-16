@@ -6,12 +6,9 @@ package com.allamiflorencia.mines.Controller;
 
 import com.allamiflorencia.mines.Matrix.Matrix;
 import com.allamiflorencia.mines.Mines;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -67,18 +64,18 @@ public class PrimaryController {
 
     public PrimaryController() {
         try {
-            FileInputStream bomb_stream = new FileInputStream(".\\images\\bomb.png");
-            this.bomb_image = new Image(bomb_stream, size, size, false, true);
+              this.bomb_image = new Image(Mines.class.getResource("images/bomb.png").toExternalForm(), 
+                      size, size, false, true);
             
-        } catch (FileNotFoundException ex) {
+        } catch (IllegalArgumentException ex) {
             Logger.getLogger(PrimaryController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         try {
-            FileInputStream flag_stream = new FileInputStream(".\\images\\flag.png");
-            this.flag_image = new Image(flag_stream, size, size, false, true);
+            this.flag_image = new Image(Mines.class.getResource("images/flag.png").toExternalForm(), 
+                    size, size, false, true);
             
-        } catch (FileNotFoundException ex) {
+        } catch (IllegalArgumentException ex) {
             Logger.getLogger(PrimaryController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
